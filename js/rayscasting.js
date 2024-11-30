@@ -3,10 +3,12 @@ var canvas;
 var context;
 const FPS = 60;
 var cenario;
+var player;
 
 // ----------- Cores ----------- 
 const wallColor = '#000'; // Preto para as paredes
 const groundColor = '#777'; // Cinza para o chão
+const playerColor = '#FFF'; // Branco para jogador
 // ----------- Cores ----------- 
 
 // ----------- MAPA ----------- 
@@ -28,6 +30,53 @@ var nivel1 = [
 const canvasWidth = 800;
 const canvasHeight = 600;
 
+// ----------- EVENTOS DO TELCADO ----------- 
+document.addEventListener('keydown', (key) => {
+   switch (key.keyCode) {
+    case 87:
+        // move up
+        player.moveUp();
+        break;
+    case 65:
+        // move left
+        player.moveLeft();
+        break;
+    case 83:
+        // move down
+        player.moveDown();
+        break;
+    case 68:
+        // move rigth
+        player.moveRigth();
+        break;
+    default:
+        break;
+   }
+});
+
+document.addEventListener('keyup', (key) => {    
+    switch (key.keyCode) {
+     case 87:
+         player.releaseMove();
+         break;
+     case 65:
+         // stop move left
+         player.releaseTurn();
+         break;
+     case 83:
+         // stop move down
+         player.releaseMove();
+         break;
+     case 68:
+         // stop move rigth
+         player.releaseTurn();
+         break;
+     default:
+         break;
+    }
+ });
+
+
 function init() {
     console.log("Início do Jogo");
     canvas = document.getElementById('canvas');
@@ -38,6 +87,7 @@ function init() {
     canvas.height = canvasHeight;
 
     cenario = new Level(canvas, context, nivel1);
+    player = new Player(context, cenario, 450, 250); // 300, 200 é a posicao inicial
 
     // Inicia o jogo
     setInterval(() => {
@@ -53,6 +103,7 @@ function apagarTela() {
 function game() {
     apagarTela();
     cenario.draw();
+    player.draw();
 }
 
 class Level {
@@ -92,6 +143,71 @@ class Player {
     constructor(con, cenario, x, y){
         this.context = con;
         this.cenario = cenario;
+
+        this.x = x;
+        this.y = y;
+
+        this.move = 0;
+        this.turn = 0;        
         
+        this.turnAngle = 0;
+        this.moveSpeed = 3; // 3 px por ciclo 
+        this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
+        
+    }
+
+    
+    moveUp() {
+        this.move = 1;
+
+    }
+    
+    moveDown() {
+        this.move = -1;
+    }
+    
+    moveRigth() {
+        this.turn = 1;
+    }
+    
+    moveLeft() {
+        this.turn = -1;
+    }
+    
+    releaseMove() {
+        this.move = 0;
+    }
+    
+    releaseTurn() {
+        this.turn = 0;
+    }
+    
+    updateMovement() {
+        var newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
+        var newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
+        
+        this.x = newX;
+        this.y = newY;
+        
+        this.turnAngle += this.turn * this.turnSpeed;
+    }
+    
+    draw() {
+        this.updateMovement();
+        this.context.fillStyle = playerColor;
+        this.context.fillRect(this.x - 4, this.y - 4 ,8 ,8); // passo a posicao e o tamanho é o dobro da velocidade
+
+        // Draw line wich player is pointing to
+        var fovX = this.x + (this.move * Math.cos(this.turnAngle) * 150);
+        var fovY = this.y + (this.move * Math.sin(this.turnAngle) * 150);
+        // it should dow a line from to player and forward where is looking at
+        this.context.beginPath();
+        this.context.moveTo(this.x, this.y);
+        this.context.lineTo(fovX, fovY);
+        this.context.strokeStyle = '#AAA';
+        this.context.stroke();
+
+
+
     }
 }
