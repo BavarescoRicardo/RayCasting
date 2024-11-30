@@ -1,111 +1,92 @@
-// Variaveis globais
+// Variáveis globais
 var canvas;
 var context;
 const FPS = 60;
 var cenario;
 
 // ----------- Cores ----------- 
-const wallColor = '#000';
-const groundColor = '#777';
+const wallColor = '#000'; // Preto para as paredes
+const groundColor = '#777'; // Cinza para o chão
 // ----------- Cores ----------- 
 
 // ----------- MAPA ----------- 
 var nivel1 = [
-    [1,1,1,1,1,1,1,1,1,1],
-    [1,1,1,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,1,1,0,0,0,0,0,1],
-    [1,1,1,1,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,1,1,1,0,1],
-    [1,0,0,0,0,1,0,0,0,1],
-    [1,0,0,0,0,1,1,0,0,1],
-    [1,1,1,1,1,1,1,1,1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 1, 1, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-
 // ----------- MAPA ----------- 
 
-// Dimensoes Cenario
-const canvaWidth = 600;
-const canvaHeigth = 600;
+// Dimensões do Canvas
+const canvasWidth = 800;
+const canvasHeight = 600;
 
 function init() {
-    console.log("Inicio");
+    console.log("Início do Jogo");
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
 
-    // Modificadores de dimensoes
-    canvas.width = canvaWidth;
-    canvas.heigth = canvaHeigth;
+    // Configuração de dimensões do Canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 
     cenario = new Level(canvas, context, nivel1);
 
-    setInterval(() =>
-        {this.game();
-
-        }, 1000/FPS
-    );
+    // Inicia o jogo
+    setInterval(() => {
+        game();
+    }, 1000 / FPS);
 }
 
-function apagarTela(){
-        // Apagar todos os desenhos da tela
-        // ....
-
-        canvas.width = canvaWidth;
-        canvas.heigth = canvaHeigth;
-
+function apagarTela() {
+    // Limpa o canvas sem redefinir suas dimensões
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function game() {
-    this.apagarTela();
+    apagarTela();
     cenario.draw();
 }
 
-
-
-
 class Level {
-    constructor(canvas, ctx, array){
+    constructor(canvas, ctx, array) {
         this.canvas = canvas;
         this.context = ctx;
         this.matriz = array;
 
-        // Dimensoes Cenario
-        this.heigthM = this.matriz.length;
-        this.widthM = this.matriz[0].length;
+        // Dimensões do Mapa
+        this.heightM = this.matriz.length; // Quantidade de linhas
+        this.widthM = this.matriz[0].length; // Quantidade de colunas
 
-        // ------- Dimensao em px ------- 
-        this.heigthC = this.canvas.heigth;
-        this.widthC = this.canvas.width;
-
-        // ------- Dimensao de cada bloco ------- 
-        this.heigthT = parseInt(this.heigthC / this.heigthM);
-        this.widthT = parseInt(this.widthC / this.widthM);
-
-
-        // console.log(this.heigthT);
-
+        // Dimensões de cada tile
+        this.heightT = canvas.height / this.heightM;
+        this.widthT = canvas.width / this.widthM;
     }
 
     draw() {
-        var color;
-
-        for (var y = 0; y < this.heigthM; y++) {
-            //console.log(this.heigthC);
+        for (var y = 0; y < this.heightM; y++) {
             for (var x = 0; x < this.widthM; x++) {
-                if (this.matriz[y][x] == 1) {
-                    color = wallColor;                    
-                } else {
-                    color = groundColor;
-                }
+                const color = this.matriz[y][x] === 1 ? wallColor : groundColor;
 
                 this.context.fillStyle = color;
-                this.context.fillRect(x * this.widthT, y * this.heigthT, this.widthT, this.heigthT);                
-            }            
+                this.context.fillRect(
+                    x * this.widthT, 
+                    y * this.heightT, 
+                    this.widthT, 
+                    this.heightT
+                );
+            }
         }
-        
     }
 }
+
 
 class Player {
     constructor(con, cenario, x, y){
