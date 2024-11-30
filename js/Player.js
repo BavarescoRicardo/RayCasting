@@ -45,9 +45,10 @@ export class Player {
     updateMovement() {
         var newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         var newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
-        
-        this.x = newX;
-        this.y = newY;
+        if(!this.cenario.collision(parseInt(this.x/this.cenario.widthT), parseInt(this.y/this.cenario.heightT))){
+            this.x = newX;
+            this.y = newY;
+        }
         
         this.turnAngle += this.turn * this.turnSpeed;
     }

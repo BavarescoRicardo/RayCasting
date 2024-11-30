@@ -14,6 +14,16 @@ export class Level {
         this.widthT = canvas.width / this.widthM;
     }
 
+    collision(x, y) {
+        var colide = false;
+        if(this.matriz[y][x] != 0){
+            colide = true;
+        }
+
+        // Retorno variavel que detecta colisao
+        return colide;
+    }
+
     draw() {
         for (var y = 0; y < this.heightM; y++) {
             for (var x = 0; x < this.widthM; x++) {
