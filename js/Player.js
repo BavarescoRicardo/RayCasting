@@ -51,12 +51,15 @@ export class Player {
         }
         
         this.turnAngle += this.turn * this.turnSpeed;
+        if (this.turnAngle > 2*Math.PI){
+            this.turnAngle = 0;
+        }
     }
     
     draw() {
         this.updateMovement();
         this.context.fillStyle = playerColor;
-        this.context.fillRect(this.x - 4, this.y - 4 ,8 ,8); // passo a posicao e o tamanho é o dobro da velocidade
+        this.context.fillRect(this.x - 4, this.y - 4, 8,8); // passo a posicao e o tamanho é o dobro da velocidade
 
         // Draw line wich player is pointing to
         var fovX = this.x + (this.move * Math.cos(this.turnAngle) * 150);
