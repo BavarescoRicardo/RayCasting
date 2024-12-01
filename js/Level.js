@@ -13,17 +13,15 @@ export class Level {
         this.heightT = canvas.height / this.heightM;
         this.widthT = canvas.width / this.widthM;
     }
-
     collision(x, y) {
-        var colide = false;
-        if(this.matriz[y][x] != 0){
-            colide = true;
+        // Verifica se os índices estão dentro dos limites da matriz
+        if (y < 0 || y >= this.matriz.length || x < 0 || x >= this.matriz[0].length) {
+            return false; // Fora dos limites, sem colisão
         }
-
-        // Retorno variavel que detecta colisao
-        return colide;
+    
+        return this.matriz[y][x] === 1; // Retorna true se houver parede
     }
-
+    
     draw() {
         for (var y = 0; y < this.heightM; y++) {
             for (var x = 0; x < this.widthM; x++) {

@@ -15,7 +15,6 @@ export class Player {
         this.moveSpeed = 3; // 3 px por ciclo 
         this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
 
-        this.ray;
         this.ray = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.increaseAngle, 0);        
     }
 

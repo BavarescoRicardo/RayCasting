@@ -31,8 +31,8 @@ var nivel1 = [
 // ----------- MAPA ----------- 
 
 // Dimensões do Canvas
-const canvasWidth = 800;
-const canvasHeight = 600;
+export const canvasWidth = 800;
+export const canvasHeight = 600;
 
 // ----------- EVENTOS DO TELCADO ----------- 
 document.addEventListener('keydown', (key) => {
