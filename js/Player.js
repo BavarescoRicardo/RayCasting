@@ -1,4 +1,5 @@
 import { playerColor } from './rayscasting.js';
+import { Ray } from './Ray.js';
 export class Player {
     constructor(con, cenario, x, y){
         this.context = con;
@@ -13,7 +14,9 @@ export class Player {
         this.turnAngle = 0;
         this.moveSpeed = 3; // 3 px por ciclo 
         this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
-        
+
+        this.ray;
+        this.ray = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.increaseAngle, 0);        
     }
 
     
@@ -54,6 +57,12 @@ export class Player {
         if (this.turnAngle > 2*Math.PI){
             this.turnAngle = 0;
         }
+        if (this.turnAngle < 0){
+            this.turnAngle += this.turnAngle + (2*Math.PI);
+        }
+        
+        this.ray.setAngle(this.turnAngle);
+        this.ray.draw();
     }
     
     draw() {
@@ -62,16 +71,13 @@ export class Player {
         this.context.fillRect(this.x - 4, this.y - 4, 8,8); // passo a posicao e o tamanho é o dobro da velocidade
 
         // Draw line wich player is pointing to
-        var fovX = this.x + (this.move * Math.cos(this.turnAngle) * 150);
-        var fovY = this.y + (this.move * Math.sin(this.turnAngle) * 150);
+        var fovX = this.x + (this.move * Math.cos(this.turnAngle) * 100);
+        var fovY = this.y + (this.move * Math.sin(this.turnAngle) * 100);
         // it should dow a line from to player and forward where is looking at
         this.context.beginPath();
         this.context.moveTo(this.x, this.y);
         this.context.lineTo(fovX, fovY);
         this.context.strokeStyle = '#AAA';
-        this.context.stroke();
-
-
-
+        this.context.stroke();        
     }
 }

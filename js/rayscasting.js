@@ -12,6 +12,7 @@ var player;
 export const wallColor = '#000'; // Preto para as paredes
 export const groundColor = '#777'; // Cinza para o chão
 export const playerColor = '#FFF'; // Branco para jogador
+export const sizeTile = 50;
 // ----------- Cores ----------- 
 
 // ----------- MAPA ----------- 
