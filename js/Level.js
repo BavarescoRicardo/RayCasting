@@ -13,12 +13,14 @@ export class Level {
         this.heightT = canvas.height / this.heightM;
         this.widthT = canvas.width / this.widthM;
     }
+
     collision(x, y) {
-        // Verifica se os índices estão dentro dos limites da matriz
+        console.log(`Checking collision at x: ${x}, y: ${y}`);
         if (y < 0 || y >= this.matriz.length || x < 0 || x >= this.matriz[0].length) {
-            return false; // Fora dos limites, sem colisão
+            console.warn(`Out of bounds: a matirz length: ${this.matriz.length} x: ${x}, y: ${y}`);
+            return false;
         }
-    
+
         return this.matriz[y][x] === 1; // Retorna true se houver parede
     }
     

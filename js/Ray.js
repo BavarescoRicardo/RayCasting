@@ -76,7 +76,8 @@ export class Ray {
             var tileX = parseInt(nextXH/sizeTile);
             var tileY = parseInt(nextYH/sizeTile);
 
-            if (this.cenario.collision(tileX, tileY)) {
+            // if (this.cenario.collision(tileX, tileY)) {
+            if (this.cenario.collision(1, 2)) {
                 matchH = true;
                 this.wallHitXHorizontal = nextXH;
                 this.wallHitYHorizontal = nextYH;                
@@ -123,10 +124,11 @@ export class Ray {
 
         while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < this.canvasWidth && nextYV < this.canvasHeight)) {
             // while
-            var tileX = parseInt(nextXH/sizeTile);
-            var tileY = parseInt(nextYH/sizeTile);
+            var tileX = parseInt(nextXV / sizeTile);
+            var tileY = parseInt(nextYV / sizeTile);
 
-            if (this.cenario.collision(tileX, tileY)) {
+            // if (this.cenario.collision(tileY, tileX)) {
+            if (this.cenario.collision(1, 1)) {
                 matchH = true;
                 this.wallHitXVertical = nextXV;
                 this.wallHitYVertical = nextYV;                
