@@ -20,7 +20,7 @@ export class Ray {
         this.wallHitYVertical = 0;        
     }
 
-    setAngle(turnAngle){
+    setAngle(turnAngle){        
         this.turnAngle = this.normalizeAngle(turnAngle + this.increseAngle);
         
     }
@@ -36,60 +36,62 @@ export class Ray {
     cast() {
         this.interceptX = 0;
         this.interceptY = 0;
-
+    
         this.xStep = 0;
         this.yStep = 0;
-
-        this.down =  false;
-        this.left =  false;
-
-        if (this.playerAngle < Math.PI)
-            this.down =  true;
-
-        if (this.playerAngle > Math.PI/2 && this.playerAngle < 3 * Math.PI/2)
-            this.left =  true;      
-
+    
+        this.down = false;
+        this.left = false;
+    
+        if (this.playerAngle < Math.PI) this.down = true;
+        if (this.playerAngle > Math.PI / 2 && this.playerAngle < (3 * Math.PI) / 2) this.left = true;
+    
         var matchH = false;
-        this.interceptY = Math.floor(this.y/sizeTile) * sizeTile;
-
-        if(this.down){
+        this.interceptY = Math.floor(this.y / sizeTile) * sizeTile;
+    
+        if (this.down) {
             this.interceptY += sizeTile;
         }
-        
-        var catetoAdjacente = (this.interceptY - this.y) / Math.tan(this.turnAngle);
-        this.interceptX = this.x + catetoAdjacente;
-
-        // calculo da distancia entre cada interseccao do cenario -- step x
-        this.yStep = sizeTile;
-        this.yStep = this.yStep / Math.tan(this.turnAngle);
-        var nextXH = this.interceptX; 
-        var nextYH = this.interceptY;     
-
-        // case move upward
-        if(!this.down){
-            this.yStep = -this.yStep;
+    
+        // Check for zero tangent
+        var tangent = Math.tan(this.turnAngle);
+        if (Math.abs(tangent) < 1e-6) {
+            tangent = 1e-6; // Assign a small value to avoid division by zero
         }
-
-        if(!this.down){
+    
+        var catetoAdjacente = (this.interceptY - this.y) / tangent;
+        this.interceptX = this.x + catetoAdjacente;
+    
+        // Calculate step sizes for horizontal intersections
+        this.xStep = sizeTile / tangent;
+        if (!this.down) {
+            this.xStep = -this.xStep;
+        }
+    
+        var nextXH = this.interceptX;
+        var nextYH = this.interceptY;
+    
+        if (!this.down) {
             nextYH--;
-        }    
-
-        // Algum erro aqui impede print do player e do raio/ navegador trava apos este ponto
+        }
+    
         while (!matchH) {
-            var tileX = parseInt(nextXH/sizeTile);
-            var tileY = parseInt(nextYH/sizeTile);
-            
+            var tileX = Math.floor(nextXH / sizeTile);
+            var tileY = Math.floor(nextYH / sizeTile);
+    
+            if (tileX < 0 || tileX >= this.cenario.widthT || tileY < 0 || tileY >= this.cenario.heightT) {
+                break; // Out of bounds, stop
+            }
+    
             if (this.cenario.collision(tileX, tileY)) {
                 matchH = true;
                 this.wallHitXHorizontal = nextXH;
-                this.wallHitYHorizontal = nextYH;                
+                this.wallHitYHorizontal = nextYH;
             } else {
                 nextXH += this.xStep;
-                nextYH += this.yStep;
-            }           
-        }        
-
-        /*
+                nextYH += sizeTile * (this.down ? 1 : -1);
+            }
+        }
         var nextXH = this.interceptX;
         var nextYH = this.interceptY;
 
@@ -124,7 +126,7 @@ export class Ray {
         if(this.left){
             this.xStep = -this.xStep;
         }
-        */
+        
         while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < this.canvasWidth && nextYV < this.canvasHeight)) {            
             var tileX = parseInt(nextXV / sizeTile);
             var tileY = parseInt(nextYV / sizeTile);
@@ -138,11 +140,11 @@ export class Ray {
                 nextYV += this.yStep;
             }
         }
-        /*
+        
         this.wallHitX = this.wallHitXHorizontal;
-        this.wallHitY = this.wallHitYHorizontal;           */
+        this.wallHitY = this.wallHitYHorizontal;                  
     }
-
+    
     draw() {
        this.cast();
 
