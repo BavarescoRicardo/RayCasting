@@ -54,7 +54,7 @@ export class Ray {
         if(this.down){
             this.interceptY += sizeTile;
         }
-
+        
         var catetoAdjacente = (this.interceptY - this.y) / Math.tan(this.turnAngle);
         this.interceptX = this.x + catetoAdjacente;
 
@@ -71,6 +71,10 @@ export class Ray {
             nextYH--;
         }
 
+        var nextXH = this.interceptX; 
+        var nextYH = this.interceptY;         
+
+        // Algum erro aqui impede print do player e do raio
         while (!matchH) {
 
             var tileX = parseInt(nextXH/sizeTile);
@@ -87,6 +91,7 @@ export class Ray {
             }            
         }        
 
+        
         var nextXH = this.interceptX;
         var nextYH = this.interceptY;
 
@@ -139,12 +144,11 @@ export class Ray {
         }
 
         this.wallHitX = this.wallHitXHorizontal;
-        this.wallHitY = this.wallHitYHorizontal;       
-    
+        this.wallHitY = this.wallHitYHorizontal;           
     }
 
     draw() {
-        this.cast();
+       this.cast();
 
         // Show ray as a line
         console.log("This should. Show ray as a line")
