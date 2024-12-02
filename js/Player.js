@@ -15,7 +15,7 @@ export class Player {
         this.moveSpeed = 3; // 3 px por ciclo 
         this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
 
-        this.ray = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.increaseAngle, 0);        
+        this.ray = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, 0, 0);        
     }
 
     
@@ -70,8 +70,9 @@ export class Player {
         this.context.fillRect(this.x - 4, this.y - 4, 8,8); // passo a posicao e o tamanho é o dobro da velocidade
 
         // Draw line wich player is pointing to
-        var fovX = this.x + (this.move * Math.cos(this.turnAngle) * 100);
-        var fovY = this.y + (this.move * Math.sin(this.turnAngle) * 100);
+        var fovX = this.x + (Math.cos(this.turnAngle) * 100);
+        var fovY = this.y + (Math.sin(this.turnAngle) * 100);
+        
         // it should dow a line from to player and forward where is looking at
         this.context.beginPath();
         this.context.moveTo(this.x, this.y);

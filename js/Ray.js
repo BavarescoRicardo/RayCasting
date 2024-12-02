@@ -26,8 +26,9 @@ export class Ray {
     }
 
     normalizeAngle(angle) {
-        this.turnAngle = angle % (2 * Math.PI);
+        return (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
     }
+    
 
 
 //#### TODO
@@ -61,6 +62,8 @@ export class Ray {
         // calculo da distancia entre cada interseccao do cenario -- step x
         this.yStep = sizeTile;
         this.yStep = this.yStep / Math.tan(this.turnAngle);
+        var nextXH = this.interceptX; 
+        var nextYH = this.interceptY;     
 
         // case move upward
         if(!this.down){
@@ -69,29 +72,24 @@ export class Ray {
 
         if(!this.down){
             nextYH--;
-        }
+        }    
 
-        var nextXH = this.interceptX; 
-        var nextYH = this.interceptY;         
-
-        // Algum erro aqui impede print do player e do raio
+        // Algum erro aqui impede print do player e do raio/ navegador trava apos este ponto
         while (!matchH) {
-
             var tileX = parseInt(nextXH/sizeTile);
             var tileY = parseInt(nextYH/sizeTile);
-
-            // if (this.cenario.collision(tileX, tileY)) {
-            if (this.cenario.collision(1, 2)) {
+            
+            if (this.cenario.collision(tileX, tileY)) {
                 matchH = true;
                 this.wallHitXHorizontal = nextXH;
                 this.wallHitYHorizontal = nextYH;                
             } else {
                 nextXH += this.xStep;
                 nextYH += this.yStep;
-            }            
+            }           
         }        
 
-        
+        /*
         var nextXH = this.interceptX;
         var nextYH = this.interceptY;
 
@@ -126,37 +124,31 @@ export class Ray {
         if(this.left){
             this.xStep = -this.xStep;
         }
-
-        while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < this.canvasWidth && nextYV < this.canvasHeight)) {
-            // while
+        */
+        while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < this.canvasWidth && nextYV < this.canvasHeight)) {            
             var tileX = parseInt(nextXV / sizeTile);
             var tileY = parseInt(nextYV / sizeTile);
 
-            // if (this.cenario.collision(tileY, tileX)) {
-            if (this.cenario.collision(1, 1)) {
-                matchH = true;
+            if (this.cenario.collision(tileY, tileX)) {
+                matchV = true;
                 this.wallHitXVertical = nextXV;
                 this.wallHitYVertical = nextYV;                
             } else {
                 nextXV += this.xStep;
                 nextYV += this.yStep;
-            }  
+            }
         }
-
+        /*
         this.wallHitX = this.wallHitXHorizontal;
-        this.wallHitY = this.wallHitYHorizontal;           
+        this.wallHitY = this.wallHitYHorizontal;           */
     }
 
     draw() {
        this.cast();
 
-        // Show ray as a line
-        console.log("This should. Show ray as a line")
+        // Show ray as a line This should. Show ray as a line
         var xDestine = this.wallHitX;
-        var yDestine = this.wallHitY;
-
-        console.log(xDestine)
-        console.log(yDestine)                
+        var yDestine = this.wallHitY;              
 
         this.context.beginPath();
         this.context.moveTo(this.x, this.y);

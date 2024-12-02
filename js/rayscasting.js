@@ -4,7 +4,7 @@ import { Player } from './Player.js';
 // Variáveis globais
 var canvas;
 var context;
-const FPS = 60;
+const FPS = 30;
 var cenario;
 var player;
 

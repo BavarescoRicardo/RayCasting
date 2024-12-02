@@ -15,7 +15,7 @@ export class Level {
     }
 
     collision(x, y) {
-        console.log(`Checking collision at x: ${x}, y: ${y}`);
+        // console.log(`Checking collision at x: ${x}, y: ${y}`);
         if (y < 0 || y >= this.matriz.length || x < 0 || x >= this.matriz[0].length) {
             console.warn(`Out of bounds: a matirz length: ${this.matriz.length} x: ${x}, y: ${y}`);
             return false;
