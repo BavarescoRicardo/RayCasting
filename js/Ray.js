@@ -84,18 +84,20 @@ export class Ray {
         while (!matchH) {
             var tileX = Math.floor(nextXH / sizeTile);
             var tileY = Math.floor(nextYH / sizeTile);
-    
+        
+            // Verificar se está fora dos limites
             if (tileX < 0 || tileX >= this.cenario.widthT || tileY < 0 || tileY >= this.cenario.heightT) {
-                break; // Out of bounds, stop
+                break; // Fora dos limites, parar loop
             }
-    
+        
+            // Verificar colisão
             if (this.cenario.collision(tileX, tileY)) {
                 matchH = true;
                 this.wallHitXHorizontal = nextXH;
                 this.wallHitYHorizontal = nextYH;
             } else {
                 nextXH += this.xStep;
-                nextYH += sizeTile * (this.down ? 1 : -1);
+                nextYH += (this.down ? sizeTile : -sizeTile);
             }
         }
         var nextXH = this.interceptX;
