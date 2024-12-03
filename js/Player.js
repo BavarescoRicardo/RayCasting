@@ -61,6 +61,7 @@ export class Player {
         }
         
         this.ray.setAngle(this.turnAngle);
+        this.ray.setPosotion(this.x, this.y);
         this.ray.draw();
     }
     
@@ -77,8 +78,6 @@ export class Player {
         this.context.beginPath();
         this.context.moveTo(this.x, this.y);
         this.context.lineTo(fovX, fovY);
-        console.log("fov x  " + fovX)
-        console.log("fov y  " + fovY)
         this.context.strokeStyle = '#AAA';
         this.context.stroke();        
     }

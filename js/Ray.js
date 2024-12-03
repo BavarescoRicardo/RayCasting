@@ -25,6 +25,12 @@ export class Ray {
         
     }
 
+    setPosotion(x,y){        
+        this.x = x;
+        this.y = y;
+        
+    }
+
     normalizeAngle(angle) {
         return (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
     }
