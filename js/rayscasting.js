@@ -12,7 +12,7 @@ var player;
 export const wallColor = '#000'; // Preto para as paredes
 export const groundColor = '#777'; // Cinza para o chão
 export const playerColor = '#FFF'; // Branco para jogador
-export const sizeTile = 50;
+export const sizeTile = 60;
 // ----------- Cores ----------- 
 
 // ----------- MAPA ----------- 
@@ -31,8 +31,8 @@ var nivel1 = [
 // ----------- MAPA ----------- 
 
 // Dimensões do Canvas
-export const canvasWidth = 800;
-export const canvasHeight = 600;
+export const canvasWidth = 600;
+export const canvasHeight = 450;
 
 // ----------- EVENTOS DO TELCADO ----------- 
 document.addEventListener('keydown', (key) => {

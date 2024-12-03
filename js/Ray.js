@@ -135,7 +135,7 @@ export class Ray {
             this.xStep = -this.xStep;
         }
         
-        while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < this.canvasWidth && nextYV < this.canvasHeight)) {            
+        while (!matchV && (nextXV >= 0 && nextYV >= 0 && nextXV < canvasWidth && nextYV < canvasHeight)) {            
             var tileX = parseInt(nextXV / sizeTile);
             var tileY = parseInt(nextYV / sizeTile);
 
