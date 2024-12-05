@@ -47,8 +47,6 @@ export class Ray {
         this.down = this.turnAngle > 0 && this.turnAngle < Math.PI;
         this.left = this.turnAngle > Math.PI / 2 && this.turnAngle < (3 * Math.PI) / 2;
 
-        console.log(`Turn Angle: ${this.turnAngle}, Down: ${this.down}, Left: ${this.left}`);
-
         // Horizontal Intersections
         let matchH = false;
         this.interceptY = Math.floor(this.y / sizeTile) * sizeTile;
@@ -69,12 +67,12 @@ export class Ray {
 
         while (!matchH) {
             const tileX = Math.floor(nextXH / sizeTile);
-            const tileY = Math.floor(nextYH / sizeTile);
-
+            const tileY = Math.floor((nextYH + (this.down ? 0 : -1)) / sizeTile);
+        
             if (tileX < 0 || tileX >= this.cenario.widthM || tileY < 0 || tileY >= this.cenario.heightM) {
                 break;
             }
-
+        
             if (this.cenario.collision(tileX, tileY)) {
                 matchH = true;
                 this.wallHitXHorizontal = nextXH;
@@ -83,9 +81,7 @@ export class Ray {
                 nextXH += this.xStep;
                 nextYH += this.down ? sizeTile : -sizeTile;
             }
-        }
-
-        console.log(`Horizontal Intersections: nextXH=${nextXH}, nextYH=${nextYH}`);
+        }  
 
         // Vertical Intersections
         let matchV = false;
@@ -104,9 +100,9 @@ export class Ray {
         let nextYV = this.interceptY;
 
         while (!matchV && nextXV >= 0 && nextYV >= 0 && nextXV < canvasWidth && nextYV < canvasHeight) {
-            const tileX = Math.floor(nextXV / sizeTile);
+            const tileX = Math.floor((nextXV + (this.left ? -1 : 0)) / sizeTile);
             const tileY = Math.floor(nextYV / sizeTile);
-
+        
             if (this.cenario.collision(tileX, tileY)) {
                 matchV = true;
                 this.wallHitXVertical = nextXV;
@@ -115,9 +111,7 @@ export class Ray {
                 nextXV += this.xStep;
                 nextYV += this.yStep;
             }
-        }
-
-        console.log(`Vertical Intersections: nextXV=${nextXV}, nextYV=${nextYV}`);
+        }        
 
         // Choose closest intersection
         const distHorizontal = Math.hypot(this.wallHitXHorizontal - this.x, this.wallHitYHorizontal - this.y);
