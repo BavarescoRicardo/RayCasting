@@ -32,7 +32,7 @@ var nivel1 = [
 
 // Dimensões do Canvas
 export const canvasWidth = 600;
-export const canvasHeight = 450;
+export const canvasHeight = 600;
 
 // ----------- EVENTOS DO TELCADO ----------- 
 document.addEventListener('keydown', (key) => {

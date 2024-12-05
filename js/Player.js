@@ -61,7 +61,7 @@ export class Player {
         }
         
         this.ray.setAngle(this.turnAngle);
-        this.ray.setPosotion(this.x, this.y);
+        this.ray.setPosition(this.x, this.y);
         this.ray.draw();
     }
     
