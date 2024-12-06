@@ -1,4 +1,4 @@
-import { playerColor } from './rayscasting.js';
+import { playerColor, canvasHeight, canvasWidth } from './rayscasting.js';
 import { Ray } from './Ray.js';
 export class Player {
     constructor(con, cenario, x, y){
@@ -15,10 +15,27 @@ export class Player {
         this.moveSpeed = 3; // 3 px por ciclo 
         this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
 
-        this.ray = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, 0, 0);        
+        
+        // Adicionar raios para todo campo de visao do personagem
+        this.numRays = canvasWidth;
+        this.rays = []; 
+        // calcular angulo para cada raio
+        this.FOV = 60;
+        this.halfFov = this.FOV/2;
+        this.increaseAngulo = this.convertDegres(this.FOV / this.numRays);
+        this.initialAngle = this.convertDegres(this.turnAngle - this.halfFov);
+        this.rayAngle = this.initialAngle;
+        for (let index = 0; index < this.numRays; index++) {
+            this.rays[index] = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.rayAngle, index);   
+            this.rayAngle += this.increaseAngulo;
+        }
+
     }
 
-    
+    convertDegres(angulo){
+        return angulo * (Math.PI / 180);
+    }
+
     moveUp() {
         this.move = 1;
 
@@ -60,9 +77,15 @@ export class Player {
             this.turnAngle += this.turnAngle + (2*Math.PI);
         }
         
-        this.ray.setAngle(this.turnAngle);
-        this.ray.setPosition(this.x, this.y);
-        this.ray.draw();
+        // this.ray.setAngle(this.turnAngle);
+        // this.ray.setPosition(this.x, this.y);
+        // this.ray.draw();
+
+        for (let index = 0; index < this.numRays; index++) {
+            this.rays[index].setAngle(this.turnAngle);            
+            this.rays[index].setPosition(this.x, this.y);
+            this.rays[index].draw();            
+        }        
     }
     
     draw() {

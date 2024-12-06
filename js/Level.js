@@ -15,14 +15,13 @@ export class Level {
     }
 
     collision(x, y) {
-        // console.log(`Checking collision at x: ${x}, y: ${y}`);
-        if (y < 0 || y >= this.matriz.length || x < 0 || x >= this.matriz[0].length) {
-            console.warn(`Out of bounds: a matirz length: ${this.matriz.length} x: ${x}, y: ${y}`);
-            return false;
+        // Valide se x e y estão dentro dos limites do mapa
+        if (x < 0 || x >= this.widthM || y < 0 || y >= this.heightM) {
+            return true; // Considere como uma colisão fora do mapa
         }
-
-        return this.matriz[y][x] === 1; // Retorna true se houver parede
+        return this.matriz[y][x] === 1; // Verifique se é uma parede
     }
+    
     
     draw() {
         for (var y = 0; y < this.heightM; y++) {

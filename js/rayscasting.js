@@ -91,7 +91,7 @@ function init() {
     canvas.height = canvasHeight;
 
     cenario = new Level(canvas, context, nivel1);
-    player = new Player(context, cenario, 450, 250); // 300, 200 é a posicao inicial
+    player = new Player(context, cenario, 450, 250); // 450, 250 é a posicao inicial
 
     // Inicia o jogo
     setInterval(() => {
