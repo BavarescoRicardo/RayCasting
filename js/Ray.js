@@ -22,6 +22,7 @@ export class Ray {
     }
 
     setAngle(turnAngle) {
+        this.playerAngle = turnAngle;
         this.turnAngle = this.normalizeAngle(turnAngle + this.increseAngle);
     }
 
@@ -31,7 +32,8 @@ export class Ray {
     }
 
     normalizeAngle(angle) {
-        return (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+        this.angle = (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+        return this.angle;
     }
 
     cast() {
@@ -131,6 +133,9 @@ export class Ray {
             this.wallHitY = this.wallHitYVertical;
             this.distance = distVertical;
         }
+
+        // Deveria corrigir as paredes arrendodadas quando proximo
+        this.distance = this.distance * Math.cos(this.playerAngle - this.angle);
     }
     
     // Funcao para renderizar 3d todo - deixar a parte de 3d em outra classe para a segunda div canvas3d
