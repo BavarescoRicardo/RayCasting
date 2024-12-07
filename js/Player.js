@@ -20,8 +20,6 @@ export class Player {
         this.numRays = canvasWidth;
         this.rays = []; 
         // calcular angulo para cada raio
-        this.FOV = 60;
-        this.halfFov = this.FOV/2;
         this.increaseAngulo = this.convertDegres(this.FOV / this.numRays);
         this.initialAngle = this.convertDegres(this.turnAngle - this.halfFov);
         this.rayAngle = this.initialAngle;
@@ -84,7 +82,9 @@ export class Player {
         for (let index = 0; index < this.numRays; index++) {
             this.rays[index].setAngle(this.turnAngle);            
             this.rays[index].setPosition(this.x, this.y);
-            this.rays[index].draw();            
+            // draw 3d insted of ray map
+            // this.rays[index].draw();            
+            this.rays[index].wallRender();
         }        
     }
     

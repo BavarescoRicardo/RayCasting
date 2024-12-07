@@ -33,6 +33,8 @@ var nivel1 = [
 // Dimensões do Canvas
 export const canvasWidth = 600;
 export const canvasHeight = 600;
+export const FOV = 60;
+export const halfFov = FOV/2;
 
 // ----------- EVENTOS DO TELCADO ----------- 
 document.addEventListener('keydown', (key) => {
@@ -105,7 +107,7 @@ function apagarTela() {
 
 function game() {
     apagarTela();
-    cenario.draw();
+    // cenario.draw();
     player.draw();
 }
 

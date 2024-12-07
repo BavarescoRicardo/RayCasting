@@ -1,7 +1,7 @@
-import { canvasHeight, canvasWidth, sizeTile } from './rayscasting.js';
+import { canvasHeight, canvasWidth, sizeTile, halfFov, FOV } from './rayscasting.js';
 
 export class Ray {
-    constructor(con, cenario, x, y, playerAngle, increseAngle, column) {
+    constructor(con, cenario, x, y, playerAngle, increseAngle, column, halfFov) {
         this.context = con;
         this.cenario = cenario;
         this.x = x;
@@ -9,6 +9,7 @@ export class Ray {
         this.playerAngle = playerAngle;
         this.increseAngle = increseAngle;
         this.column = column;
+        this.distance = 0;
 
         this.wallHitX = 0;
         this.wallHitY = 0;
@@ -124,13 +125,35 @@ export class Ray {
         if (distHorizontal < distVertical) {
             this.wallHitX = this.wallHitXHorizontal;
             this.wallHitY = this.wallHitYHorizontal;
+            this.distance = distHorizontal;
         } else {
             this.wallHitX = this.wallHitXVertical;
             this.wallHitY = this.wallHitYVertical;
+            this.distance = distVertical;
         }
-    
     }
     
+    // Funcao para renderizar 3d todo - deixar a parte de 3d em outra classe para a segunda div canvas3d
+    wallRender() {
+        var heightTile = 500;
+        var perpectiveDistance = (canvasWidth / 2)/Math.tan(halfFov);
+        var wallHeigth = heightTile / this.distance * perpectiveDistance;
+
+        // Calculos moro para visao do jogador
+        // y0 inicio y; y1 fim y
+        var y0 = parseInt((canvasHeight / 2) - parseInt(wallHeigth / 2));
+        var y1 = y0 + wallHeigth;
+        var x = this.column;
+
+        // draw simulated 3d world 
+        this.context.beginPath();
+        this.context.moveTo(this.x, y0);
+        this.context.lineTo(this.x, this.y1);
+        this.context.strokeStyle = '#666';
+        this.context.stroke();
+
+        this.cast();
+    }
 
     draw() {
         this.cast();
