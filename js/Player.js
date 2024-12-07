@@ -1,4 +1,4 @@
-import { playerColor, canvasHeight, canvasWidth } from './rayscasting.js';
+import { playerColor, canvasHeight, canvasWidth, FOV, halfFov } from './rayscasting.js';
 import { Ray } from './Ray.js';
 export class Player {
     constructor(con, cenario, x, y){
@@ -20,8 +20,8 @@ export class Player {
         this.numRays = canvasWidth;
         this.rays = []; 
         // calcular angulo para cada raio
-        this.increaseAngulo = this.convertDegres(this.FOV / this.numRays);
-        this.initialAngle = this.convertDegres(this.turnAngle - this.halfFov);
+        this.increaseAngulo = this.convertDegres(FOV / this.numRays);
+        this.initialAngle = this.convertDegres(this.turnAngle - halfFov);
         this.rayAngle = this.initialAngle;
         for (let index = 0; index < this.numRays; index++) {
             this.rays[index] = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.rayAngle, index);   
@@ -60,33 +60,50 @@ export class Player {
     }
     
     updateMovement() {
+        // Calcula a nova posição do jogador
         var newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         var newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
-        if(!this.cenario.collision(parseInt(this.x/this.cenario.widthT), parseInt(this.y/this.cenario.heightT))){
+    
+        // Converte as novas coordenadas para índices de matriz
+        const gridX = Math.floor(newX / this.cenario.widthT);
+        const gridY = Math.floor(newY / this.cenario.heightT);
+    
+        // Validação dos índices no mapa
+        if (
+            gridX < 0 || 
+            gridY < 0 || 
+            gridY >= this.cenario.matriz.length || 
+            gridX >= this.cenario.matriz[0].length
+        ) {
+            console.log(`Collision Check fails: (${newX}, ${newY})`);
+            return; // Evita movimento fora do mapa
+        }
+    
+        // Verifica colisão com o mapa
+        if (!this.cenario.collision(gridX, gridY)) {
+            // Atualiza a posição do jogador apenas se não houver colisão
             this.x = newX;
             this.y = newY;
         }
-        
+    
+        // Atualiza o ângulo de rotação
         this.turnAngle += this.turn * this.turnSpeed;
-        if (this.turnAngle > 2*Math.PI){
+        if (this.turnAngle > 2 * Math.PI) {
             this.turnAngle = 0;
         }
-        if (this.turnAngle < 0){
-            this.turnAngle += this.turnAngle + (2*Math.PI);
+        if (this.turnAngle < 0) {
+            this.turnAngle += 2 * Math.PI;
+        }
+    
+        // Atualiza os raios
+        for (let index = 0; index < this.numRays; index++) {
+            this.rays[index].setAngle(this.turnAngle + index * this.increaseAngulo);
+            this.rays[index].setPosition(this.x, this.y);
+            this.rays[index].wallRender();
         }
         
-        // this.ray.setAngle(this.turnAngle);
-        // this.ray.setPosition(this.x, this.y);
-        // this.ray.draw();
-
-        for (let index = 0; index < this.numRays; index++) {
-            this.rays[index].setAngle(this.turnAngle);            
-            this.rays[index].setPosition(this.x, this.y);
-            // draw 3d insted of ray map
-            // this.rays[index].draw();            
-            this.rays[index].wallRender();
-        }        
     }
+    
     
     draw() {
         this.updateMovement();

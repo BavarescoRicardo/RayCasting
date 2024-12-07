@@ -135,6 +135,8 @@ export class Ray {
     
     // Funcao para renderizar 3d todo - deixar a parte de 3d em outra classe para a segunda div canvas3d
     wallRender() {
+        this.cast();
+
         var heightTile = 500;
         var perpectiveDistance = (canvasWidth / 2)/Math.tan(halfFov);
         var wallHeigth = heightTile / this.distance * perpectiveDistance;
@@ -147,12 +149,11 @@ export class Ray {
 
         // draw simulated 3d world 
         this.context.beginPath();
-        this.context.moveTo(this.x, y0);
-        this.context.lineTo(this.x, this.y1);
+        this.context.moveTo(x, y0);
+        this.context.lineTo(x, y1);
         this.context.strokeStyle = '#666';
         this.context.stroke();
 
-        this.cast();
     }
 
     draw() {
