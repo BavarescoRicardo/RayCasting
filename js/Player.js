@@ -1,5 +1,5 @@
 import { playerColor, canvasHeight, canvasWidth, FOV, halfFov } from './rayscasting.js';
-import { Ray } from './Ray.js';
+import { Ray } from './Ray2d.js';
 export class Player {
     constructor(con, cenario, x, y){
         this.context = con;
@@ -59,7 +59,7 @@ export class Player {
         this.turn = 0;
     }
     
-    updateMovement() {
+    updateMovement(miniMapa) {
         // Calcula a nova posição do jogador
         var newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         var newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
@@ -99,14 +99,19 @@ export class Player {
         for (let index = 0; index < this.numRays; index++) {
             this.rays[index].setAngle(this.turnAngle + index * this.increaseAngulo);
             this.rays[index].setPosition(this.x, this.y);
-            this.rays[index].wallRender();
+            if (miniMapa){
+                this.rays[index].draw();
+            } else {
+                this.rays[index].wallRender();
+            }
+
         }
         
     }
     
     
-    draw() {
-        this.updateMovement();
+    draw(miniMapa) {
+        this.updateMovement(miniMapa);
         this.context.fillStyle = playerColor;
         this.context.fillRect(this.x - 4, this.y - 4, 8,8); // passo a posicao e o tamanho é o dobro da velocidade
 

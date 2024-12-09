@@ -2,11 +2,15 @@ import { Level } from './Level.js';
 import { Player } from './Player.js';
 
 // Variáveis globais
-var canvas;
-var context;
+var canvas2d;
+var context2d;
+var canvas3d;
+var context3d;
 const FPS = 30;
-var cenario;
-var player;
+var cenario2d;
+var cenario3d;
+var player2d;
+var player3d;
 
 // ----------- Cores ----------- 
 export const wallColor = '#000'; // Preto para as paredes
@@ -42,19 +46,23 @@ document.addEventListener('keydown', (key) => {
    switch (key.keyCode) {
     case 87:
         // move up
-        player.moveUp();
+        player2d.moveUp();
+        player3d.moveUp();
         break;
     case 65:
         // move left
-        player.moveLeft();
+        player2d.moveLeft();
+        player3d.moveLeft();
         break;
     case 83:
         // move down
-        player.moveDown();
+        player2d.moveDown();
+        player3d.moveDown();
         break;
     case 68:
         // move rigth
-        player.moveRigth();
+        player2d.moveRigth();
+        player3d.moveRigth();
         break;
     default:
         break;
@@ -64,19 +72,23 @@ document.addEventListener('keydown', (key) => {
 document.addEventListener('keyup', (key) => {    
     switch (key.keyCode) {
      case 87:
-         player.releaseMove();
+         player2d.releaseMove();
+         player3d.releaseMove();
          break;
      case 65:
          // stop move left
-         player.releaseTurn();
+         player2d.releaseTurn();
+         player3d.releaseTurn();
          break;
      case 83:
          // stop move down
-         player.releaseMove();
+         player2d.releaseMove();
+         player3d.releaseMove();
          break;
      case 68:
          // stop move rigth
-         player.releaseTurn();
+         player2d.releaseTurn();
+         player3d.releaseTurn();
          break;
      default:
          break;
@@ -86,15 +98,27 @@ document.addEventListener('keyup', (key) => {
 
 function init() {
     console.log("Início do Jogo");
-    canvas = document.getElementById('canvas');
-    context = canvas.getContext('2d');
+    // Configuracao 2d
+    canvas2d = document.getElementById('canvas2d');
+    context2d = canvas2d.getContext('2d');
 
-    // Configuração de dimensões do Canvas
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    // Configuracao 3d
+    canvas3d = document.getElementById('canvas3d');
+    context3d = canvas3d.getContext('2d');
 
-    cenario = new Level(canvas, context, nivel1);
-    player = new Player(context, cenario, 250, 100); // 450, 250 é a posicao inicial
+    // Configuração de dimensões do Canvas 2d
+    canvas2d.width = canvasWidth;
+    canvas2d.height = canvasHeight;
+
+    // Configuração de dimensões do Canvas 3d
+    canvas3d.width = canvasWidth;
+    canvas3d.height = canvasHeight;    
+
+    cenario2d = new Level(canvas2d, context2d, nivel1);
+    cenario3d = new Level(canvas3d, context3d, nivel1);
+
+    player2d = new Player(context2d, cenario2d, 250, 100); // 250, 100 é a posicao inicial
+    player3d = new Player(context3d, cenario3d, 250, 100); // 250, 100 é a posicao inicial
 
     // Inicia o jogo
     setInterval(() => {
@@ -103,13 +127,15 @@ function init() {
 }
 function apagarTela() {
     // Limpa o canvas sem redefinir suas dimensões
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context2d.clearRect(0, 0, canvas2d.width, canvas2d.height);
+    context3d.clearRect(0, 0, canvas3d.width, canvas3d.height);
 }
 
 function game() {
     apagarTela();
-    // cenario.draw();
-    player.draw();
+    cenario2d.draw();
+    player2d.draw(true);
+    player3d.draw(false);
 }
 
 // Expõe a função init ao escopo global
