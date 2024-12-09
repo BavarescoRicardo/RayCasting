@@ -70,7 +70,7 @@ export class Ray {
     
         while (!matchH) {
             const tileX = Math.floor(nextXH / sizeTile);
-            const tileY = Math.floor((nextYH + (this.down ? 0 : -1)) / sizeTile);
+            const tileY = this.down ? Math.floor(nextYH / sizeTile) : Math.floor((nextYH - 1) / sizeTile);
     
             if (tileX < 0 || tileX >= this.cenario.widthM || tileY < 0 || tileY >= this.cenario.heightM) {
                 break; // Fora do mapa
@@ -103,7 +103,7 @@ export class Ray {
         let nextYV = this.interceptY;
     
         while (!matchV) {
-            const tileX = Math.floor(nextXV / sizeTile);
+            const tileX = this.left ? Math.floor((nextXV - 1) / sizeTile) : Math.floor(nextXV / sizeTile);
             const tileY = Math.floor(nextYV / sizeTile);
     
             if (tileX < 0 || tileX >= this.cenario.widthM || tileY < 0 || tileY >= this.cenario.heightM) {
@@ -133,10 +133,11 @@ export class Ray {
             this.wallHitY = this.wallHitYVertical;
             this.distance = distVertical;
         }
-
-        // Deveria corrigir as paredes arrendodadas quando proximo
-        this.distance = this.distance * Math.cos(this.playerAngle - this.angle);
+    
+        // Corrigir a distorção causada pelo ângulo
+        this.distance = this.distance * Math.cos(this.playerAngle - this.turnAngle);
     }
+    
     
     // Funcao para renderizar 3d todo - deixar a parte de 3d em outra classe para a segunda div canvas3d
     wallRender() {
