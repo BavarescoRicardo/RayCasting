@@ -116,8 +116,8 @@ export class Player {
         this.context.fillRect(this.x - 4, this.y - 4, 8,8); // passo a posicao e o tamanho é o dobro da velocidade
 
         // Draw line wich player is pointing to
-        var fovX = this.x + (Math.cos(this.turnAngle) * 100);
-        var fovY = this.y + (Math.sin(this.turnAngle) * 100);
+        var fovX = this.x + (Math.cos(this.turnAngle) * 10);
+        var fovY = this.y + (Math.sin(this.turnAngle) * 10);
         
         // it should dow a line from to player and forward where is looking at
         this.context.beginPath();

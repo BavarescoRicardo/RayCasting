@@ -11,12 +11,12 @@ body {
 .tela {
     display: flex;
     justify-content: space-between;
-    gap: 5px; /* Ensures a gap between the canvases */
-    margin: 5px;
+    gap: 10px; /* Ajuste para espaçamento consistente */
+    margin: 10px;
 }
 
 canvas {
-    width: 600px; /* Adjust the width as necessary */
-    height: 600px; /* Adjust the height as necessary */
+    width: 600px; /* Responsivo */
+    height: 600px;
     border: 2px solid #000;
 }
