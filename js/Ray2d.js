@@ -1,7 +1,7 @@
 import { canvasHeight, canvasWidth, sizeTile, halfFov, FOV } from './rayscasting.js';
 
 export class Ray {
-    constructor(con, cenario, x, y, playerAngle, increseAngle, column, halfFov) {
+    constructor(con, cenario, x, y, playerAngle, increseAngle, column) {
         this.context = con;
         this.cenario = cenario;
         this.x = x;
@@ -23,7 +23,7 @@ export class Ray {
 
     setAngle(turnAngle) {
         this.playerAngle = turnAngle;
-        this.turnAngle = this.normalizeAngle(turnAngle + this.increseAngle);
+        this.turnAngle = this.normalizeAngle(turnAngle) + this.increseAngle;
     }
 
     setPosition(x, y) {
@@ -106,10 +106,6 @@ export class Ray {
             const tileX = this.left ? Math.floor((nextXV - 1) / sizeTile) : Math.floor(nextXV / sizeTile);
             const tileY = Math.floor(nextYV / sizeTile);
     
-            if (tileX < 0 || tileX >= this.cenario.widthM || tileY < 0 || tileY >= this.cenario.heightM) {
-                break; // Fora do mapa
-            }
-    
             if (this.cenario.collision(tileX, tileY)) {
                 matchV = true;
                 this.wallHitXVertical = nextXV;
@@ -147,8 +143,7 @@ export class Ray {
         var perpectiveDistance = (canvasWidth / 2)/Math.tan(halfFov);
         var wallHeigth = heightTile / this.distance * perpectiveDistance;
 
-        // Calculos moro para visao do jogador
-        // y0 inicio y; y1 fim y
+        // Calculos parede para visao do jogador
         var y0 = parseInt((canvasHeight / 2) - parseInt(wallHeigth / 2));
         var y1 = y0 + wallHeigth;
         var x = this.column;
