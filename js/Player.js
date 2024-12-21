@@ -21,8 +21,7 @@ export class Player {
         this.rays = []; 
         // calcular angulo para cada raio
         this.increaseAngulo = this.convertDegres(FOV / this.numRays);
-        // Ajuste o ângulo inicial corretamente
-        this.initialAngle = this.turnAngle - halfFov;
+        this.initialAngle = this.convertDegres(this.turnAngle - halfFov);
         this.rayAngle = this.initialAngle;
         for (let index = 0; index < this.numRays; index++) {
         // for (let index = 0; index < 10; index++) {
@@ -99,17 +98,16 @@ export class Player {
     
         // Atualiza os raios
         for (let index = 0; index < this.numRays; index++) {
-            // Distribua os raios com base no ângulo central
-            this.rays[index].setAngle(this.turnAngle - halfFov + (index * this.increaseAngulo));
+        // for (let index = 0; index < 10; index++) {
+            this.rays[index].setAngle(this.turnAngle + (index * this.increaseAngulo));
             this.rays[index].setPosition(this.x, this.y);
-
-            if (miniMapa) {
+            if (miniMapa){
                 this.rays[index].draw();
             } else {
                 this.rays[index].wallRender();
             }
-        }
 
+        }
         
     }
     
