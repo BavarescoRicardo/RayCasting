@@ -52,12 +52,15 @@ export class Ray {
     
         // Interseções horizontais
         let matchH = false;
+        // encontra qual indice y o jogador deve estar
         this.interceptY = Math.floor(this.y / sizeTile) * sizeTile;
         if (this.down) {
+            // se tiver olhando para baixo o indice y recebe o tamanho do quadrado do mapa
             this.interceptY += sizeTile;
         }
     
         const tangent = Math.tan(this.turnAngle);
+        // calcula a intersecsao dividindo a intersecao y pela tangente? esta certo essa conta?
         this.interceptX = this.x + (this.interceptY - this.y) / tangent;
     
         this.xStep = sizeTile / tangent;
@@ -71,10 +74,6 @@ export class Ray {
         while (!matchH) {
             const tileX = Math.floor(nextXH / sizeTile);
             const tileY = this.down ? Math.floor(nextYH / sizeTile) : Math.floor((nextYH - 1) / sizeTile);
-    
-            if (tileX < 0 || tileX >= this.cenario.widthM || tileY < 0 || tileY >= this.cenario.heightM) {
-                break; // Fora do mapa
-            }
     
             if (this.cenario.collision(tileX, tileY)) {
                 matchH = true;
