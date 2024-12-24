@@ -22,8 +22,8 @@ export class Ray {
     }
 
     setAngle(turnAngle) {
-        this.playerAngle = turnAngle;
-        this.turnAngle = this.normalizeAngle(turnAngle) + this.increseAngle;
+        this.playerAngle = this.normalizeAngle(turnAngle);
+        this.turnAngle = this.normalizeAngle(this.playerAngle + this.increseAngle);
     }
 
     setPosition(x, y) {
@@ -32,8 +32,7 @@ export class Ray {
     }
 
     normalizeAngle(angle) {
-        this.angle = (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-        return this.angle;
+        return (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
     }
 
     cast() {
