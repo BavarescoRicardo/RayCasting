@@ -2,10 +2,8 @@ import { Level } from './Level.js';
 import { Player } from './Player.js';
 
 // Variáveis globais
-var canvas2d;
-var context2d;
-var canvas3d;
-var context3d;
+var canvas2d, context2d, canvas3d, context3d, legend;
+var cenario2d, cenario3d, player2d, player3d;
 const FPS = 50;
 var cenario2d;
 var cenario3d;
@@ -54,8 +52,6 @@ function game() {
     cenario2d.draw();
     player2d.draw(true);
     player3d.draw(false);
-
-   
 }
 
 // Inicializa o jogo
@@ -70,6 +66,8 @@ function init() {
     canvas3d = document.getElementById('canvas3d');
     context3d = canvas3d.getContext('2d');
 
+    legend = document.getElementById('legend');
+
     // Configuração de dimensões dos Canvas
     canvas2d.width = canvasWidth;
     canvas2d.height = canvasHeight;
@@ -79,53 +77,71 @@ function init() {
     // Inicializa cenário e jogadores
     cenario2d = new Level(canvas2d, context2d, nivel1);
     cenario3d = new Level(canvas3d, context3d, nivel1);
-    player2d = new Player(context2d, cenario2d, 250, 100); // Posição inicial: 250, 100
+    player2d = new Player(context2d, cenario2d, 250, 100);
     player3d = new Player(context3d, cenario3d, 250, 100);
 
     // Eventos de teclado
     document.addEventListener('keydown', (key) => {
         switch (key.keyCode) {
-            case 87: // W - move para cima
-                player2d.moveUp();
-                player3d.moveUp();
-                break;
-            case 65: // A - move para esquerda
-                player2d.moveLeft();
-                player3d.moveLeft();
-                break;
-            case 83: // S - move para baixo
-                player2d.moveDown();
-                player3d.moveDown();
-                break;
-            case 68: // D - move para direita
-                player2d.moveRigth();
-                player3d.moveRigth();
-                break;
-            default:
-                break;
+            case 87: player2d.moveUp(); player3d.moveUp(); break; // W
+            case 65: player2d.moveLeft(); player3d.moveLeft(); break; // A
+            case 83: player2d.moveDown(); player3d.moveDown(); break; // S
+            case 68: player2d.moveRigth(); player3d.moveRigth(); break; // D
         }
     });
 
     document.addEventListener('keyup', (key) => {
         switch (key.keyCode) {
-            case 87: // W
-            case 83: // S
-                player2d.releaseMove();
-                player3d.releaseMove();
-                break;
-            case 65: // A
-            case 68: // D
-                player2d.releaseTurn();
-                player3d.releaseTurn();
-                break;
-            default:
-                break;
+            case 87:
+            case 83: player2d.releaseMove(); player3d.releaseMove(); break;
+            case 65:
+            case 68: player2d.releaseTurn(); player3d.releaseTurn(); break;
         }
-    });    
+    });
+
+    // Evento de mouse dentro do init
+    canvas2d.addEventListener('mousemove', (event) => {
+        const rect = canvas2d.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        let rayFound = false;
+
+        for (const ray of player2d.rays) {
+            const distance = pointToSegmentDistance(mouseX, mouseY, ray.x, ray.y, ray.wallHitX, ray.wallHitY);
+            if (distance < 5) {
+                rayFound = true;
+                legend.style.display = 'block';
+                legend.style.left = `${event.clientX + 10}px`;
+                legend.style.top = `${event.clientY + 10}px`;
+                legend.innerHTML = `
+                    <strong>Ray Info:</strong><br>
+                    Angle: ${(ray.turnAngle * 180 / Math.PI).toFixed(2)}°<br>
+                    Distance: ${ray.distance.toFixed(2)}<br>
+                    Wall: (${ray.wallHitX.toFixed(2)}, ${ray.wallHitY.toFixed(2)})
+                `;
+                break;
+            }
+        }
+
+        if (!rayFound) legend.style.display = 'none';
+    });
+
+    canvas2d.addEventListener('mouseout', () => legend.style.display = 'none');
 
     // Inicia o loop do jogo
     setInterval(game, 1000 / FPS);
 }
 
-// Expõe a função init ao escopo global
+// Calcula a distância entre um ponto e um segmento de reta
+function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
+    const A = px - x1, B = py - y1, C = x2 - x1, D = y2 - y1;
+    const dot = A * C + B * D, lenSq = C * C + D * D, param = dot / lenSq;
+    if (param < 0 || lenSq === 0) return Math.hypot(px - x1, py - y1);
+    if (param > 1) return Math.hypot(px - x2, py - y2);
+    const xx = x1 + param * C, yy = y1 + param * D;
+    return Math.hypot(px - xx, py - yy);
+}
+
+// Exponha ao escopo global
 window.init = init;
