@@ -19,6 +19,14 @@ export class Ray {
 
         this.wallHitXVertical = 0;
         this.wallHitYVertical = 0;
+
+        // Variavel para guardar pixel da textura
+        this.texturePixel = 0;
+
+        // Carregar imagens
+        this.tiles = new Image(sizeTile, sizeTile);
+        this.tiles.src = "/js/assets/paredecasa.jpg";        
+
     }
 
     setAngle(turnAngle) {
@@ -117,15 +125,23 @@ export class Ray {
         // Escolher a interseção mais próxima
         const distHorizontal = Math.hypot(this.wallHitXHorizontal - this.x, this.wallHitYHorizontal - this.y);
         const distVertical = Math.hypot(this.wallHitXVertical - this.x, this.wallHitYVertical - this.y);
-    
+        var indiceAtual;
         if (distHorizontal < distVertical) {
             this.wallHitX = this.wallHitXHorizontal;
             this.wallHitY = this.wallHitYHorizontal;
             this.distance = distHorizontal;
+
+            // calculos para exibir imagem do sprite se X vertical
+            indiceAtual = parseInt(this.wallHitX/sizeTile);
+            this.texturePixel = this.wallHitX - (indiceAtual * sizeTile);
         } else {
             this.wallHitX = this.wallHitXVertical;
             this.wallHitY = this.wallHitYVertical;
             this.distance = distVertical;
+
+            // calculos para exibir imagem do sprite se Y horizontal
+            indiceAtual = parseInt(this.wallHitY/sizeTile);
+            this.texturePixel = this.wallHitY - (indiceAtual * sizeTile);            
         }
     
         // Corrigir a distorção causada pelo ângulo
@@ -146,12 +162,26 @@ export class Ray {
         var y1 = y0 + wallHeigth;
         var x = this.column;
 
-        // draw simulated 3d world 
-        this.context.beginPath();
-        this.context.moveTo(x, y0);
-        this.context.lineTo(x, y1);
-        this.context.strokeStyle = '#666';
-        this.context.stroke();
+        // draw simulated 3d world
+        // cast image sprite 
+        var imageHeigth = y0 - y1;
+        this.context.drawImage(
+            this.tiles,
+            this.texturePixel,
+            0,
+            1,
+            64,
+            this.column,
+            y1,
+            1,
+            imageHeigth // altura imagem fixo em 64            
+        );
+        
+        // this.context.beginPath();
+        // this.context.moveTo(x, y0);
+        // this.context.lineTo(x, y1);
+        // this.context.strokeStyle = '#666';
+        // this.context.stroke();
 
     }
 
