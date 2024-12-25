@@ -9,6 +9,7 @@ var cenario2d;
 var cenario3d;
 var player2d;
 var player3d;
+var tiles;
 
 // ----------- Cores ----------- 
 export const wallColor = '#000'; // Preto para as paredes
@@ -80,6 +81,9 @@ function init() {
     player2d = new Player(context2d, cenario2d, 250, 100);
     player3d = new Player(context3d, cenario3d, 250, 100);
 
+    // Carregar imagens
+    tiles = new Image(sizeTile, sizeTile);
+    tiles.src = "assets/wallpaint.png";
     // Eventos de teclado
     document.addEventListener('keydown', (key) => {
         switch (key.keyCode) {
