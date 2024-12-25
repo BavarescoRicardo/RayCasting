@@ -165,6 +165,7 @@ export class Ray {
         // draw simulated 3d world
         // cast image sprite 
         var imageHeigth = y0 - y1;
+        this.context.imageSmoothingEnabled = false;
         this.context.drawImage(
             this.tiles,
             this.texturePixel,
