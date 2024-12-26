@@ -25,7 +25,7 @@ export class Ray {
 
         // Carregar imagens
         this.tiles = new Image(sizeTile, sizeTile);
-        this.tiles.src = "/js/assets/paredecasa.jpg";        
+        this.tiles.src = "/js/assets/wallpaint.png";        
 
     }
 

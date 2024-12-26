@@ -99,7 +99,7 @@ export class Player {
         // desenhar chao e teto
         if(!miniMapa){
             // chao
-            this.context.fillStyle = "#333321";
+            this.context.fillStyle = "#cfccb0";
             this.context.fillRect(0, 300, 600, 500);
 
             // teto
