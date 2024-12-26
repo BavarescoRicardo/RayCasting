@@ -96,6 +96,16 @@ export class Player {
             this.turnAngle += 2 * Math.PI;
         }
     
+        // desenhar chao e teto
+        if(!miniMapa){
+            // chao
+            this.context.fillStyle = "#333321";
+            this.context.fillRect(0, 300, 600, 500);
+
+            // teto
+            this.context.fillStyle = "#222321";
+            this.context.fillRect(0, 0, 600, 300);            
+        }
         // Atualiza os raios
         for (let index = 0; index < this.numRays; index++) {
         // for (let index = 0; index < 10; index++) {
