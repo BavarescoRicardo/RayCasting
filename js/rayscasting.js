@@ -118,8 +118,10 @@ function init() {
                     <strong>Ray Info:</strong><br>
                     Angle: ${(ray.turnAngle * 180 / Math.PI).toFixed(2)}°<br>
                     Distance: ${ray.distance.toFixed(2)}<br>
+                    Lado x: ${ray.left ? 'esquerdo' : 'direito'}<br>
+                    Lado y: ${ray.down ? 'baixo' : 'cima'}<br>
                     Wall: (${ray.wallHitX.toFixed(2)}, ${ray.wallHitY.toFixed(2)})
-                `;
+                `;            
                 break;
             }
         }
