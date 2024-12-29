@@ -6,7 +6,7 @@ export class Level {
         this.matriz = array;
 
         // Dimensões do Mapa
-        this.heightM = this.matriz.length; // Quantidade de linhas
+        this.heightM = this.matriz.length -1; // Quantidade de linhas
         this.widthM = this.matriz[0].length; // Quantidade de colunas
 
         // Dimensões de cada tile
