@@ -1,5 +1,6 @@
 import { Level } from './Level.js';
 import { Player } from './Player.js';
+import { Hud } from './Hud.js';
 
 // Variáveis globais
 var canvas2d, context2d, canvas3d, context3d, legend;
@@ -9,7 +10,7 @@ var cenario2d;
 var cenario3d;
 var player2d;
 var player3d;
-
+var hud;
 // ----------- Cores ----------- 
 export const wallColor = '#000'; // Preto para as paredes
 export const groundColor = '#777'; // Cinza para o chão
@@ -79,6 +80,7 @@ function init() {
     cenario3d = new Level(canvas3d, context3d, nivel1);
     player2d = new Player(context2d, cenario2d, 250, 100);
     player3d = new Player(context3d, cenario3d, 250, 100);
+    hud = new Hud();
 
     // Eventos de teclado
     document.addEventListener('keydown', (key) => {
