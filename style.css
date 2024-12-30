@@ -2,9 +2,15 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+}
+
+.corpo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #f4f4f4;
 }
 
@@ -12,11 +18,29 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 10px; /* Ajuste para espaçamento consistente */
-    margin: 10px;
+    margin: 0 10px;
 }
 
-canvas {
+.hud-controller {
+    margin: 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    justify-content: space-between;
+    gap: 10px; /* Ajuste para espaçamento consistente */
+    margin: 0 10px;
+}
+
+.tela canvas {
     width: 600px; /* Responsivo */
     height: 600px;
     border: 2px solid #000;
 }
+
+#hud {
+width: 80rem;
+height: 10rem;      
+} 
+
