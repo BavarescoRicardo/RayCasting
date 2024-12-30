@@ -1,7 +1,8 @@
 import { playerColor, canvasHeight, canvasWidth, FOV, halfFov } from './rayscasting.js';
 import { Ray } from './Ray2d.js';
+import { Sprite } from './Sprite.js';
 export class Player {
-    constructor(con, cenario, x, y){
+    constructor(con, cenario, x, y, zBuffer){
         this.context = con;
         this.cenario = cenario;
 
@@ -14,7 +15,7 @@ export class Player {
         this.turnAngle = 0;
         this.moveSpeed = 3; // 3 px por ciclo 
         this.turnSpeed = Math.PI / 60; // volta completa é 180 e divide por 3 porque é a velocidade do movimento 180/3 = 60 em graus
-
+        this.zBuffer = zBuffer;
         
         // Adicionar raios para todo campo de visao do personagem
         this.numRays = canvasWidth;
@@ -23,9 +24,10 @@ export class Player {
         this.increaseAngulo = this.convertDegres(FOV / this.numRays);
         this.initialAngle = this.convertDegres(this.turnAngle - halfFov);
         this.rayAngle = this.initialAngle;
+        this.sprites = [];
         for (let index = 0; index < this.numRays; index++) {
         // for (let index = 0; index < 10; index++) {
-            this.rays[index] = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.rayAngle, index);   
+            this.rays[index] = new Ray(this.context, this.cenario, this.x, this.y, this.turnAngle, this.rayAngle, index, this.zBuffer);   
             this.rayAngle += this.increaseAngulo;
         }
 
@@ -34,6 +36,10 @@ export class Player {
     convertDegres(angulo){
         return angulo * (Math.PI / 180);
     }
+
+    distanceBetween(x1,y1,x2,y2){
+        return Math.sqrt((x2 - x1) * (x2 - x1) + (y2-y1)*(y2-y1));
+    }    
 
     moveUp() {
         this.move = 1;
@@ -58,7 +64,7 @@ export class Player {
     
     releaseTurn() {
         this.turn = 0;
-    }
+    }  
     
     updateMovement(miniMapa) {
         // Calcula a nova posição do jogador
@@ -105,6 +111,20 @@ export class Player {
             // teto
             this.context.fillStyle = "#222321";
             this.context.fillRect(0, 0, 600, 300);            
+
+            // Create Sprite objects somente para o 3d
+            // Load sprites images
+            var imgMechaEnemy = new Image();
+            imgMechaEnemy.src = "/js/assets/mechass.png";
+            var imgOfficerEnemy = new Image();
+            imgOfficerEnemy.src = "/js/assets/mechass.png";
+            this.sprites[0] = new Sprite(300, 500, imgMechaEnemy, this, this.zBuffer, this.context);
+            this.sprites[1] = new Sprite(200, 450, imgOfficerEnemy, this, this.zBuffer, this.context);
+            this.sprites[2] = new Sprite(300, 350, imgOfficerEnemy, this, this.zBuffer, this.context);
+
+            for (let idx = 0; idx < this.sprites.length; idx++) {
+                this.sprites[idx].drawSprite();        
+            }            
         }
         // Atualiza os raios
         for (let index = 0; index < this.numRays; index++) {
@@ -119,8 +139,7 @@ export class Player {
 
         }
         
-    }
-    
+    }    
     
     draw(miniMapa) {
         this.updateMovement(miniMapa);

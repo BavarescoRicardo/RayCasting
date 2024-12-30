@@ -1,7 +1,7 @@
 import { canvasHeight, canvasWidth, sizeTile, halfFov, FOV } from './rayscasting.js';
 
 export class Ray {
-    constructor(con, cenario, x, y, playerAngle, increseAngle, column) {
+    constructor(con, cenario, x, y, playerAngle, increseAngle, column, zBuffer) {
         this.context = con;
         this.cenario = cenario;
         this.x = x;
@@ -19,6 +19,7 @@ export class Ray {
 
         this.wallHitXVertical = 0;
         this.wallHitYVertical = 0;
+        this.zBuffer = zBuffer;
 
         // Variavel para guardar pixel da textura
         this.texturePixel = 0;
@@ -146,6 +147,8 @@ export class Ray {
     
         // Corrigir a distorção causada pelo ângulo
         this.distance = this.distance * Math.cos(this.playerAngle - this.turnAngle);
+
+        this.zBuffer[this.column] = this.distance;
     }
     
     

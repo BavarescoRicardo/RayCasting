@@ -11,6 +11,7 @@ var cenario3d;
 var player2d;
 var player3d;
 var hud;
+var zBuffer = [];
 // ----------- Cores ----------- 
 export const wallColor = '#000'; // Preto para as paredes
 export const groundColor = '#777'; // Cinza para o chão
@@ -78,10 +79,10 @@ function init() {
     // Inicializa cenário e jogadores
     cenario2d = new Level(canvas2d, context2d, nivel1);
     cenario3d = new Level(canvas3d, context3d, nivel1);
-    player2d = new Player(context2d, cenario2d, 250, 100);
-    player3d = new Player(context3d, cenario3d, 250, 100);
+    player2d = new Player(context2d, cenario2d, 250, 100, zBuffer);
+    player3d = new Player(context3d, cenario3d, 250, 100, zBuffer);
     hud = new Hud();
-
+    
     // Eventos de teclado
     document.addEventListener('keydown', (key) => {
         switch (key.keyCode) {
@@ -120,6 +121,7 @@ function init() {
                     <strong>Ray Info:</strong><br>
                     Angle: ${(ray.turnAngle * 180 / Math.PI).toFixed(2)}°<br>
                     Distance: ${ray.distance.toFixed(2)}<br>
+                    Posição: ${'X: ' + ray.x + 'Y: ' + ray.y }<br>
                     Lado x: ${ray.left ? 'esquerdo' : 'direito'}<br>
                     Lado y: ${ray.down ? 'baixo' : 'cima'}<br>
                     Wall: (${ray.wallHitX.toFixed(2)}, ${ray.wallHitY.toFixed(2)})
