@@ -81,7 +81,7 @@ function init() {
     cenario3d = new Level(canvas3d, context3d, nivel1);
     player2d = new Player(context2d, cenario2d, 250, 100, zBuffer);
     player3d = new Player(context3d, cenario3d, 250, 100, zBuffer);
-    hud = new Hud();
+    hud = new Hud(player2d, player3d);
     
     // Eventos de teclado
     document.addEventListener('keydown', (key) => {
