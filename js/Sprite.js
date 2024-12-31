@@ -63,6 +63,7 @@ export class Sprite {
             var dy = this.player.y - this.y;
             var spriteAngle = Math.atan2(dy, dx) - this.player.turnAngle;
 
+            // ajuster por aqui para sprite aparecer perto?
             var x0 = Math.tan(spriteAngle) * viewDistance;
             var x1 = (30 + x0 - textureWidht/2);
             var columnWidth = textureHeight/textureHeightAux;

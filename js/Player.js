@@ -115,11 +115,12 @@ export class Player {
             // Create Sprite objects somente para o 3d
             // Load sprites images
             var imgMechaEnemy = new Image();
-            imgMechaEnemy.src = "/js/assets/mechass.png";
+            imgMechaEnemy.src = "/js/assets/mechass-resised.png";
             var imgOfficerEnemy = new Image();
-            imgOfficerEnemy.src = "/js/assets/mechass.png";
-            this.sprites[0] = new Sprite(300, 500, imgMechaEnemy, this, this.zBuffer, this.context);
-            this.sprites[1] = new Sprite(200, 450, imgOfficerEnemy, this, this.zBuffer, this.context);
+            imgOfficerEnemy.src = "/js/assets/officer-resised.png";
+            this.sprites[0] = new Sprite(300, 200, imgOfficerEnemy, this, this.zBuffer, this.context);
+            this.sprites[1] = new Sprite(400, 150, imgMechaEnemy, this, this.zBuffer, this.context);
+            this.sprites[1] = new Sprite(100, 450, imgMechaEnemy, this, this.zBuffer, this.context);
             this.sprites[2] = new Sprite(300, 350, imgOfficerEnemy, this, this.zBuffer, this.context);
 
             for (let idx = 0; idx < this.sprites.length; idx++) {
