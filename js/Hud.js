@@ -9,9 +9,10 @@ export class Hud {
         this.canvasHud = document.getElementById('hud');
         this.contextHud = this.canvasHud.getContext('2d');
 
-        // Set canvas dimensions
-        this.canvasHud.width = 1280;
-        this.canvasHud.height = 150;
+        // Set canvas dimensions based on screen size
+        this.canvasHud.width = window.innerWidth * 0.92; // 92% of the viewport width
+        this.canvasHud.height = window.innerHeight * 0.18; // 18% of the viewport height
+
 
         // Load button images
         this.imgUp = new Image();
