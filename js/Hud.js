@@ -32,6 +32,7 @@ export class Hud {
         // Add mouse event listener
         this.canvasHud.addEventListener('mousedown', this.handleHudClick.bind(this));
         this.canvasHud.addEventListener('mouseup', this.handleHudRelease.bind(this));                
+
     }
 
     drawHud() {
@@ -43,7 +44,7 @@ export class Hud {
         // Button size and positions
         const buttonSize = 50;
         const centerX = this.canvasHud.width / 2;
-        const centerY = this.canvasHud.height / 2;
+        const centerY = 85;
 
         // Up
         const upX = centerX - buttonSize / 2;
@@ -74,6 +75,7 @@ export class Hud {
         const rect = this.canvasHud.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
+        console.log(`Mouse pressed at: (${x}, ${y})`);
 
         // Check which button was clicked
         if (this.isWithinArea(x, y, this.buttonAreas.up)) {
