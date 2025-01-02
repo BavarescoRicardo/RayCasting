@@ -75,8 +75,6 @@ export class Hud {
         const rect = this.canvasHud.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
-        console.log(`Mouse pressed at: (${x}, ${y})`);
-
         // Check which button was clicked
         if (this.isWithinArea(x, y, this.buttonAreas.up)) {
             this.player2d.moveUp();
